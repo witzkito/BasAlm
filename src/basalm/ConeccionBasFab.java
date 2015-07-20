@@ -15,16 +15,16 @@ import java.sql.Statement;
  *
  * @author witzkito
  */
-public class ConeccionBas {
+public class ConeccionBasFab {
    
   
 	private Connection conn;
 	private Statement stmt;
 	private ResultSet rst;
 	
-	public ConeccionBas(){
+	public ConeccionBasFab(String direccion){
 		try{
-                        String db = "jdbc:ucanaccess://basfab.mdb";
+                        String db = "jdbc:ucanaccess://" + direccion;
 			conn = DriverManager.getConnection(db, "", ""); 
 			
 			

@@ -1,0 +1,3 @@
+/home/witzkito/sistemas/BasAlm/basfab.mdb
+/home/witzkito/sistemas/BasAlm/pes_peso.dbf
+/home/witzkito/sistemas/BasAlm/bascula.mdb
