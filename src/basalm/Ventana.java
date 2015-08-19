@@ -408,24 +408,7 @@ public class Ventana extends javax.swing.JFrame {
           System.out.println("60% - Guardando Datos");
           while (rs.next()){
             System.out.println("   - Guardando Ticket " + rs.getDouble("P_TICKET"));
-            Object rowData[] = new Object[15];
-            rowData[0] =rs.getDate("P_FECHA");
-            rowData[1] = rs.getDouble("P_TICKET");
-            rowData[2] = rs.getDouble("P_SOCIO");
-            rowData[3] = rs.getString("P_ARTIC");
-            rowData[4] = rs.getDouble("P_BRUTO");
-            rowData[5] = rs.getDouble("P_TARA");
-            rowData[6] = rs.getDouble("P_NETO");
-            rowData[7] = rs.getDouble("P_DESCU");
-            rowData[8] = rs.getBoolean("P_FACTU");
-            rowData[9] = rs.getString("P_TRANS");
-            rowData[10] = rs.getString("P_CHAPA");
-            rowData[11] = rs.getString("P_CONDUC");
-            rowData[12] = rs.getDate("P_FECACRE");
-            rowData[13] = rs.getDouble("P_REMITO");
-            rowData[14] = rs.getDouble("P_RINDE");
-
-            writer.addRecord( rowData);
+            
             
             String p_fecha;
             /*SimpleDateFormat dt = new SimpleDateFormat("dd/mm/yy"); 
@@ -444,23 +427,46 @@ public class Ventana extends javax.swing.JFrame {
                 p_fecacre = "";
             }
             System.out.println(p_fecacre);*/
-            
-            conBascula.insert("INSERT INTO PES_PESO (P_TICKET,P_SOCIO,P_ARTIC,"
-                    + "P_BRUTO,P_TARA,P_NETO,P_DESCU,P_FACTU,P_TRANS,P_CHAPA,"
-                    + "P_CONDUC,P_REMITO,P_RINDE, P_FECHA) VALUES("
-                    + rs.getDouble("P_TICKET") + ","
-                    + rs.getDouble("P_SOCIO") + ",'"
-                    + rs.getString("P_ARTIC") + "',"
-                    + rs.getDouble("P_BRUTO") + ","
-                    + rs.getDouble("P_TARA") + ","
-                    + rs.getDouble("P_NETO") + ","
-                    + rs.getDouble("P_DESCU") + ","
-                    + rs.getBoolean("P_FACTU") + ",'"
-                    + rs.getString("P_TRANS") + "','"
-                    + rs.getString("P_CHAPA") + "','"
-                    + rs.getString("P_CONDUC") + "',"
-                    + rs.getDouble("P_REMITO") + ","
-                    + rs.getDouble("P_RINDE") + ",#" + rs.getDate("P_FECHA") +"#)");
+            ResultSet rsExiste = conBascula.select("SELECT * FROM PES_PESO WHERE P_TICKET = " + rs.getDouble("P_TICKET"));
+            if (!rsExiste.next()){
+                conBascula.insert("INSERT INTO PES_PESO (P_TICKET,P_SOCIO,P_ARTIC,"
+                        + "P_BRUTO,P_TARA,P_NETO,P_DESCU,P_FACTU,P_TRANS,P_CHAPA,"
+                        + "P_CONDUC,P_REMITO,P_RINDE, P_FECHA) VALUES("
+                        + rs.getDouble("P_TICKET") + ","
+                        + rs.getDouble("P_SOCIO") + ",'"
+                        + rs.getString("P_ARTIC") + "',"
+                        + rs.getDouble("P_BRUTO") + ","
+                        + rs.getDouble("P_TARA") + ","
+                        + rs.getDouble("P_RINDE") + ","
+                        + rs.getDouble("P_DESCU") + ","
+                        + rs.getBoolean("P_FACTU") + ",'"
+                        + rs.getString("P_TRANS") + "','"
+                        + rs.getString("P_CHAPA") + "','"
+                        + rs.getString("P_CONDUC") + "',"
+                        + rs.getDouble("P_REMITO") + ","
+                        + rs.getDouble("P_RINDE") + ",#" + rs.getDate("P_FECHA") +"#)");
+                
+                Object rowData[] = new Object[15];
+                    rowData[0] =rs.getDate("P_FECHA");
+                    rowData[1] = rs.getDouble("P_TICKET");
+                    rowData[2] = rs.getDouble("P_SOCIO");
+                    rowData[3] = rs.getString("P_ARTIC");
+                    rowData[4] = rs.getDouble("P_BRUTO");
+                    rowData[5] = rs.getDouble("P_TARA");
+                    rowData[6] = rs.getDouble("P_NETO");
+                    rowData[7] = rs.getDouble("P_DESCU");
+                    rowData[8] = rs.getBoolean("P_FACTU");
+                    rowData[9] = rs.getString("P_TRANS");
+                    rowData[10] = rs.getString("P_CHAPA");
+                    rowData[11] = rs.getString("P_CONDUC");
+                    rowData[12] = rs.getDate("P_FECACRE");
+                    rowData[13] = rs.getDouble("P_REMITO");
+                    rowData[14] = rs.getDouble("P_RINDE");
+
+            writer.addRecord( rowData);
+            }else{
+                System.out.println("   - No se guardo el ticket " + rs.getDouble("P_TICKET") + " ya que existe en la base de datos de bascula");
+            }
           }
 
           writer.write();
